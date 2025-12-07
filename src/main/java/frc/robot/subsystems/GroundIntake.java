@@ -14,6 +14,7 @@ import frc.robot.Constants.IntakeConstants;
  */
 public class GroundIntake extends SubsystemBase {
     private final TalonFX intakeMotor;
+    private final TalonFX indexerMotor;
     private final VoltageOut voltageRequest = new VoltageOut(0);
 
     /**
@@ -21,9 +22,10 @@ public class GroundIntake extends SubsystemBase {
      *
      * @param motorID The CAN ID of the intake motor
      */
-    public GroundIntake(int motorID) {
+    public GroundIntake(int motorID, int indexerID) {
 
         intakeMotor = new TalonFX(motorID);
+        indexerMotor = new TalonFX(indexerID);
 
         // Configure the motor
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -32,6 +34,7 @@ public class GroundIntake extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         intakeMotor.getConfigurator().apply(config);
+        indexerMotor.getConfigurator().apply(config);
         
     }
 
@@ -40,13 +43,15 @@ public class GroundIntake extends SubsystemBase {
      */
     public void intake() {
         intakeMotor.setControl(voltageRequest.withOutput(IntakeConstants.INTAKE_SPEED));
+        indexerMotor.setControl(voltageRequest.withOutput(IntakeConstants.INTAKE_SPEED));
     }
-
     /**
+
      * Runs the intake motor in reverse to eject game pieces.
      */
     public void outtake() {
         intakeMotor.setControl(voltageRequest.withOutput(IntakeConstants.OUTTAKE_SPEED));
+        indexerMotor.setControl(voltageRequest.withOutput(IntakeConstants.OUTTAKE_SPEED));
     }
 
     /**
@@ -54,6 +59,7 @@ public class GroundIntake extends SubsystemBase {
      */
     public void stop() {
         intakeMotor.setControl(voltageRequest.withOutput(0));
+        indexerMotor.setControl(voltageRequest.withOutput(0));
     }
 
     /**
