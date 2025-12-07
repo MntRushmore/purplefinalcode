@@ -25,6 +25,7 @@ public class GroundIntake extends SubsystemBase {
      * @param motorID The CAN ID of the intake motor
      */
     public GroundIntake(int motorID) {
+
         intakeMotor = new TalonFX(motorID);
 
         // Configure the motor
@@ -34,6 +35,7 @@ public class GroundIntake extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         intakeMotor.getConfigurator().apply(config);
+        
     }
 
     /**
