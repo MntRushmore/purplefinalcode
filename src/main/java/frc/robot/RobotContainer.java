@@ -59,16 +59,6 @@ public class RobotContainer {
             )
         );
 
-        final var idle = new SwerveRequest.Idle();
-        RobotModeTriggers.disabled().whileTrue(
-            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
-        );
-
-        joystick.cross().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.circle().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
-
         // Run SysId routines when holding create/options and triangle/square.
         joystick.create().and(joystick.triangle()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.create().and(joystick.square()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
@@ -86,10 +76,10 @@ public class RobotContainer {
         // <<<< UPDATED INTAKE/OUTTAKE BINDINGS FOR L2/R2 >>>>
         
         // L2 Trigger (left trigger, check if pressed past 50%) runs intake
-        joystick.L2().greaterThan(0.5).whileTrue(intake.intakeCommand());
+        joystick.L2().whileTrue(intake.intakeCommand());
 
         // R2 Trigger (right trigger, check if pressed past 50%) runs outtake
-        joystick.R2().greaterThan(0.5).whileTrue(intake.outtakeCommand());
+        joystick.R2().whileTrue(intake.outtakeCommand());
 
         // <<<< SHOOTER/HOOD BINDINGS >>>>
         // Moved the shoot command from L2 to the Square button since L2/R2 are now used for intake/outtake

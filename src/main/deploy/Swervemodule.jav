@@ -34,8 +34,8 @@ public class SwerveModule {
         this.absoluteEncoderOffsetRadians = Math.toRadians(absoluteEncoderOffsetDegrees);
 
         // Initialize hardware
-        driveMotor = new TalonFX(driveMotorId);
-        steerMotor = new TalonFX(steerMotorId);
+        driveMotor = new TalonFX(driveMotorId, "purple");
+        steerMotor = new TalonFX(steerMotorId "purple");
         absoluteEncoder = new CANcoder(canCoderId);
 
         // Configure Kraken drive

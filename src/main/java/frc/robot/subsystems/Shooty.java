@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CANCoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder; 
@@ -23,7 +22,7 @@ public class Shooty extends SubsystemBase {
     private final CANcoder m_angleSensor; 
 
     // Intake speeds (in volts)
-    private static final double SHOOT_SPEED = 8.0;  // Adjust this value as needed
+    private static final double SHOOT_SPEED = 18.0;  // Adjust this value as needed
     private static final double HOOD_CHANGE = 0.1; // For reversing if needed
 
     private static final double MAX_DEGREES = 10;
@@ -37,8 +36,8 @@ public class Shooty extends SubsystemBase {
      * @param canID The CAN ID of the CANcoder
      */
     public Shooty(int shootID, int hoodID, int canID) {
-        shootMotor = new TalonFX(shootID);
-        hoodMotor = new TalonFX(hoodID);
+        shootMotor = new TalonFX(shootID, "purple");
+        hoodMotor = new TalonFX(hoodID, "purple");
         // Instantiate the Phoenix 6 CANcoder with the provided ID
         m_angleSensor = new CANcoder(canID); 
 
@@ -49,14 +48,6 @@ public class Shooty extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         shootMotor.getConfigurator().apply(config);
         hoodMotor.getConfigurator().apply(config); // Apply config to both motors
-
-        // Configure the CANcoder using the correct Phoenix 6 objects/methods
-        CANCoderConfiguration configs = new CANCoderConfiguration();
-        configs.MagnetSensor.MagnetOffset = 0.0; // Adjust this value based on your physical setup in Tuner X
-        configs.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        
-        // Apply the configurations to the sensor instance
-        m_angleSensor.getConfigurator().apply(configs);
         
     }
 
@@ -64,10 +55,10 @@ public class Shooty extends SubsystemBase {
      * Runs the intake motor to pull in game pieces.
      */
     public void shoot() {
-        shootMotor.setControl(voltageRequest.withOutput(SHOOT_SPEED));
+        shootMotor.setControl(voltageRequest.withOutput(-SHOOT_SPEED));
     }
 
-    /**
+    /**f
      * Runs the hood motor to aim farther (positive voltage).
      */
     public void aimFarther() {
@@ -106,7 +97,7 @@ public class Shooty extends SubsystemBase {
      */
     public double getAngleDegrees() {
         // Use the Phoenix 6 method chain: .getAbsolutePosition().getValue()
-        double rotations = m_angleSensor.getAbsolutePosition().getValue();
+        double rotations = m_angleSensor.getAbsolutePosition().getValueAsDouble(
 
         // Convert rotations (1 rotation = 360 degrees) to degrees
         double degrees = rotations * 360.0;

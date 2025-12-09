@@ -24,13 +24,12 @@ public class GroundIntake extends SubsystemBase {
      */
     public GroundIntake(int motorID, int indexerID) {
 
-        intakeMotor = new TalonFX(motorID);
-        indexerMotor = new TalonFX(indexerID);
+        intakeMotor = new TalonFX(motorID, "purple");
+        indexerMotor = new TalonFX(indexerID, "purple");
 
         // Configure the motor
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        config.CurrentLimits.SupplyCurrentLimit = IntakeConstants.CURRENT_LIMIT;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         intakeMotor.getConfigurator().apply(config);
@@ -42,8 +41,8 @@ public class GroundIntake extends SubsystemBase {
      * Runs the intake motor to pull in game pieces.
      */
     public void intake() {
-        intakeMotor.setControl(voltageRequest.withOutput(IntakeConstants.INTAKE_SPEED));
         indexerMotor.setControl(voltageRequest.withOutput(IntakeConstants.INTAKE_SPEED));
+        intakeMotor.setControl(voltageRequest.withOutput(IntakeConstants.INTAKE_SPEED));
     }
     /**
 
@@ -58,8 +57,8 @@ public class GroundIntake extends SubsystemBase {
      * Stops the intake motor.
      */
     public void stop() {
-        intakeMotor.setControl(voltageRequest.withOutput(0));
         indexerMotor.setControl(voltageRequest.withOutput(0));
+        intakeMotor.setControl(voltageRequest.withOutput(0));
     }
 
     /**
