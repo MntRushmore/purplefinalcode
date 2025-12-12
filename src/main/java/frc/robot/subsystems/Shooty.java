@@ -22,8 +22,8 @@ public class Shooty extends SubsystemBase {
     private final CANcoder m_angleSensor; 
 
     // Intake speeds (in volts)
-    private static final double SHOOT_SPEED = 18.0;  // Adjust this value as needed
-    private static final double HOOD_CHANGE = 0.1; // For reversing if needed
+    private static final double SHOOT_SPEED = 30.0;  // Adjust this value as needed
+    private static final double HOOD_CHANGE = 1.0; // For reversing if needed
 
     private static final double MAX_DEGREES = 10;
     private static final double MIN_DEGREES = 0;
@@ -97,7 +97,7 @@ public class Shooty extends SubsystemBase {
      */
     public double getAngleDegrees() {
         // Use the Phoenix 6 method chain: .getAbsolutePosition().getValue()
-        double rotations = m_angleSensor.getAbsolutePosition().getValueAsDouble(
+        double rotations = m_angleSensor.getAbsolutePosition().getValueAsDouble();
 
         // Convert rotations (1 rotation = 360 degrees) to degrees
         double degrees = rotations * 360.0;
@@ -107,7 +107,7 @@ public class Shooty extends SubsystemBase {
 
     /**
      * Command to run the shooter while the button is held.
-     *
+     
      * @return Command that runs the shooter
      */
     // <<<< ADDED shootCommand() METHOD BACK IN >>>>
